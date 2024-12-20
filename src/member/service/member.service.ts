@@ -1,5 +1,5 @@
-import CredentialDto from "@src/member/dto/credential.dto";
+import SignatureDto from "@src/common/dto/member-signature.dto";
 
 export default interface MemberService {
-  getMemberCredential(id: number): Promise<CredentialDto>;
+  getSignature(id: number): Promise<SignatureDto>;
 }

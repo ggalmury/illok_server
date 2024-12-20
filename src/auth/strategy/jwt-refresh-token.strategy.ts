@@ -8,7 +8,7 @@ import { RefreshTokenPayload } from "@src/auth/type/token-payload";
 
 import { MEMBER_SERVICE } from "@src/member/service/impl/member.service.impl";
 import MemberService from "@src/member/service/member.service";
-import CredentialDto from "@src/member/dto/credential.dto";
+import SignatureDto from "@src/common/dto/member-signature.dto";
 
 export const REFRESH_TOKEN_STRATEGY: string = "REFRESH_TOKEN_STRATEGY";
 
@@ -25,14 +25,15 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(Strategy, REFRESH_
     });
   }
 
-  async validate(payload: RefreshTokenPayload): Promise<CredentialDto> {
+  async validate(payload: RefreshTokenPayload): Promise<number> {
     const { id, uuid } = payload;
 
-    const foundCredential: CredentialDto = await this.memberService.getMemberCredential(id);
-    if (!foundCredential || id !== foundCredential.id || uuid !== foundCredential.uuid) {
+    const foundSignature: SignatureDto = await this.memberService.getSignature(id);
+
+    if (id !== foundSignature.id || uuid !== foundSignature.uuid) {
       throw new UnauthorizedException(INVALID_AUTH_TOKEN);
     }
 
-    return foundCredential;
+    return id;
   }
 }

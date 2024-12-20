@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException, ConflictException } from "@nestjs/common";
 
-import { ROLE_CONFLICT, ROLE_NOT_FOUND } from "@src/role/constant/exception-message";
-import { Role } from "@src/role/type/role";
+import { ROLE_CONFLICT, ROLE_NOT_FOUND } from "@src/auth/constant/exception-message";
+import { Role } from "@src/auth/type/role";
 
-import RoleService from "@src/role/service/role.service";
-import RoleRepository from "@src/role/repository/role.repository";
-import RoleMapper from "@src/role/mapper/role.mapper";
-import RoleEntity from "@src/role/entity/role.entity";
+import RoleService from "@src/auth/service/role.service";
+import RoleRepository from "@src/auth/repository/role.repository";
+import RoleMapper from "@src/auth/mapper/role.mapper";
+import RoleEntity from "@src/auth/entity/role.entity";
 
 export const ROLE_SERVICE: string = "ROLE_SERVICE";
 
@@ -28,7 +28,7 @@ export default class RoleServiceImpl implements RoleService {
     await this.roleRepository.insert(createdRole);
   }
 
-  async getMemberRoles(memberId: number): Promise<Role[]> {
+  async getRoles(memberId: number): Promise<Role[]> {
     const foundRoles: RoleEntity[] = await this.roleRepository.findByMemberId(memberId);
 
     return this.roleMapper.entitiesToRoles(foundRoles);
@@ -45,9 +45,10 @@ export default class RoleServiceImpl implements RoleService {
     await this.roleRepository.softDeleteById(foundRoleId);
   }
 
-  async hasRole(memberId: number, role: Role): Promise<boolean> {
-    const foundRole: RoleEntity | null = await this.roleRepository.findSpecificOneByMemberId(memberId, role);
+  async hasRole(memberId: number, targetRoles: Role[]): Promise<boolean> {
+    const foundRoles: RoleEntity[] = await this.roleRepository.findByMemberId(memberId);
+    const foundRoleNames: Role[] = foundRoles.map((foundRole) => foundRole.role);
 
-    return foundRole ? true : false;
+    return targetRoles.some((targetRole) => foundRoleNames.includes(targetRole));
   }
 }

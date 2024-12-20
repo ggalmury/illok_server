@@ -1,21 +1,25 @@
-import { Entity, Column, OneToMany } from "typeorm";
+import { Entity, Column, OneToOne, OneToMany, JoinColumn } from "typeorm";
 
-import { LoginPlatform } from "@src/member/type/login-platform";
+import { Visibility } from "@src/member/type/visibility";
 
-import BaseEntity from "@src/common/entity/base.entity";
-import RoleEntity from "@src/role/entity/role.entity";
+import SignatureEntity from "@src/common/entity/signature.entity";
+import CredentialEntity from "@src/auth/entity/credential.entity";
+import RoleEntity from "@src/auth/entity/role.entity";
+import ProfileEntity from "@src/profile/entity/profile.entity";
 
 @Entity({ name: "members" })
-export default class MemberEntity extends BaseEntity {
-  @Column({ type: "varchar", unique: true })
-  identifier: string;
+export default class MemberEntity extends SignatureEntity {
+  @Column({ type: "enum", enum: Object.values(Visibility), default: Visibility.PUBLIC })
+  visibility: Visibility;
 
-  @Column({ type: "varchar", nullable: true })
-  password: string | null;
-
-  @Column({ type: "varchar" })
-  loginPlatform: LoginPlatform;
+  @OneToOne(() => CredentialEntity, (credential) => credential.member)
+  @JoinColumn()
+  credential: CredentialEntity;
 
   @OneToMany(() => RoleEntity, (role) => role.member)
   role: RoleEntity[];
+
+  @OneToOne(() => ProfileEntity, (profile) => profile.member)
+  @JoinColumn()
+  profile: ProfileEntity;
 }

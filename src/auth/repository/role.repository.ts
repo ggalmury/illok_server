@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
 
-import { Role } from "@src/role/type/role";
+import { Role } from "@src/auth/type/role";
 
-import RoleEntity from "@src/role/entity/role.entity";
+import RoleEntity from "@src/auth/entity/role.entity";
 
 @Injectable()
 export default class RoleRepository extends Repository<RoleEntity> {
@@ -21,5 +21,9 @@ export default class RoleRepository extends Repository<RoleEntity> {
 
   async softDeleteById(id: number): Promise<void> {
     await this.softDelete({ id });
+  }
+
+  async softDeleteByMemberId(memberId: number): Promise<void> {
+    await this.softDelete({ member: { id: memberId } });
   }
 }

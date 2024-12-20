@@ -1,6 +1,6 @@
 import { registerDecorator, ValidationOptions, ValidationArguments } from "class-validator";
 
-import { Role } from "@src/role/type/role";
+import { Role } from "@src/auth/type/role";
 
 const IsRole = (validationOptions?: ValidationOptions) => {
   return (object: Object, propertyName: string) => {
@@ -14,7 +14,7 @@ const IsRole = (validationOptions?: ValidationOptions) => {
           return Object.values(Role).includes(value);
         },
         defaultMessage(args: ValidationArguments) {
-          return `잘못된 권한 역할입니다. [요청 권한: ${args.property}]`;
+          return `잘못된 인가 정보입니다. [요청 권한: ${args.property}]`;
         },
       },
     });

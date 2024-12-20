@@ -3,7 +3,7 @@ import { Request } from "express";
 
 import { INVALID_AUTH_TOKEN, AUTH_TOKEN_NOT_EXIST } from "@src/auth/constant/exception-message";
 
-const ExtractBearerToken = createParamDecorator((_, context: ExecutionContext): string => {
+const AuthToken = createParamDecorator((_, context: ExecutionContext): string => {
   const request: Request = context.switchToHttp().getRequest();
   const authHeader: string = request.headers["authorization"];
   if (!authHeader) {
@@ -18,4 +18,4 @@ const ExtractBearerToken = createParamDecorator((_, context: ExecutionContext): 
   return parts[1];
 });
 
-export default ExtractBearerToken;
+export default AuthToken;

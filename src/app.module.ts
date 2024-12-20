@@ -10,6 +10,7 @@ import redisConfig from "@src/config/redis.config";
 
 import AuthModule from "@src/auth/auth.module";
 import MemberModule from "@src/member/member.module";
+import ProfileModule from "@src/profile/profile.module";
 
 @Module({
   imports: [
@@ -34,6 +35,8 @@ import MemberModule from "@src/member/member.module";
     }),
     AuthModule,
     MemberModule,
+
+    ProfileModule,
   ],
 })
 export class AppModule {}
