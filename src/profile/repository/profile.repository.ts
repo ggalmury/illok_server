@@ -9,8 +9,8 @@ export default class ProfileRepository extends Repository<ProfileEntity> {
     super(ProfileEntity, dataSource.createEntityManager());
   }
 
-  async findByMemberId(memberId: number): Promise<ProfileEntity[]> {
-    return await this.find({ where: { member: { id: memberId } } });
+  async findOneByMemberId(memberId: number): Promise<ProfileEntity | null> {
+    return await this.findOne({ where: { member: { id: memberId } } });
   }
 
   async softDeleteByMemberId(memberId: number): Promise<void> {

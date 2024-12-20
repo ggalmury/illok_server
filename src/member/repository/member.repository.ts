@@ -12,4 +12,8 @@ export default class MemberRepository extends Repository<MemberEntity> {
   async findOneById(id: number): Promise<MemberEntity | null> {
     return await this.findOne({ where: { id } });
   }
+
+  async findOneByIdentifier(identifier: string): Promise<MemberEntity | null> {
+    return await this.findOne({ where: { credential: { identifier } } });
+  }
 }

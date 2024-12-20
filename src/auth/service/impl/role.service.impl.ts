@@ -23,7 +23,7 @@ export default class RoleServiceImpl implements RoleService {
       throw new ConflictException(ROLE_CONFLICT);
     }
 
-    const createdRole: RoleEntity = this.roleRepository.create({ member: { id: memberId }, role });
+    const createdRole: RoleEntity = this.roleMapper.toEntity(memberId, role);
 
     await this.roleRepository.insert(createdRole);
   }
