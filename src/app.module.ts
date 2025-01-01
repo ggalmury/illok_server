@@ -10,6 +10,8 @@ import redisConfig from "@src/config/redis.config";
 
 import AuthModule from "@src/auth/auth.module";
 import MemberModule from "@src/member/member.module";
+import CredentialModule from "@src/credential/credential.module";
+import RoleModule from "@src/role/role.module";
 import ProfileModule from "@src/profile/profile.module";
 
 @Module({
@@ -35,7 +37,8 @@ import ProfileModule from "@src/profile/profile.module";
     }),
     AuthModule,
     MemberModule,
-
+    CredentialModule,
+    RoleModule,
     ProfileModule,
   ],
 })
